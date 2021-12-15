@@ -57,7 +57,32 @@ Widget _homePageWidget(SneakerResponse sneakerResponse) {
 
           return GestureDetector(
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => SneakerDetails(sneaker: sneaker,)));
+                Navigator.of(context).push(
+                  PageRouteBuilder(
+                    pageBuilder: (
+                        BuildContext context,
+                        Animation<double> animation,
+                        Animation<double> secondaryAnimation) {
+                      return SneakerDetails(sneaker: sneaker);
+                    },
+                    transitionsBuilder: (
+                        BuildContext context,
+                        Animation<double> animation,
+                        Animation<double> secondaryAnimation,
+                        Widget child) {
+                      return Align(
+                        child: SizeTransition(
+                          sizeFactor: animation,
+                          child: child,
+                        ),
+                      );
+                    },
+                    transitionDuration: Duration(milliseconds: 500),
+                  ),
+                );
+
+
+                    //context, MaterialPageRoute(builder: (context) => SneakerDetails(sneaker: sneaker,)));
               },
               child: Card(
                 child: Stack(
@@ -89,7 +114,6 @@ Widget _homePageWidget(SneakerResponse sneakerResponse) {
                     ),
                     Container(
                       alignment: Alignment.topCenter,
-
                       child: Text(
                         sneaker.shoe.capitalize(),
                         style: TextStyle(color: Colors.black),
